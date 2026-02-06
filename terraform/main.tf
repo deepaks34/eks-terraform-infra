@@ -1,4 +1,13 @@
 terraform {
+  backend "s3" {
+    bucket         = "deepak-saxena-terraform-state-us-east-1"
+    key            = "eks/terraform.tfstate"
+    region         = "us-east-1"
+    dynamodb_table = "terraform-locks"
+    encrypt        = true
+  }
+}
+terraform {
   required_version = ">= 1.5.0"
 
   required_providers {
