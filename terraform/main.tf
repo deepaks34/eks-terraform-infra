@@ -147,4 +147,18 @@ resource "aws_eks_node_group" "nodes" {
 
   depends_on = [aws_iam_role_policy_attachment.node_policies]
 }
+resource "aws_eks_cluster" "simple" {
+  name     = "simple-eks"
+  role_arn = aws_iam_role.eks_cluster_role.arn
+
+  vpc_config {
+    subnet_ids = var.subnet_ids
+  }
+
+  tags = {
+    Project     = "eks-learning"
+    Environment = "dev"
+    ManagedBy   = "terraform"
+  }
+}
 
