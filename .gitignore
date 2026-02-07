@@ -4,8 +4,6 @@
 *.tfstate.*
 .terraform.lock.hcl
 
-# Kubernetes manifests (generated / local)
-terraform/k8s/
 
 # OS files
 .DS_Store
