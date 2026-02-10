@@ -7,6 +7,7 @@ terraform {
     encrypt        = true
   }
 }
+
 terraform {
   required_version = ">= 1.5.0"
 
@@ -156,3 +157,24 @@ resource "aws_eks_node_group" "nodes" {
 
   depends_on = [aws_iam_role_policy_attachment.node_policies]
 }
+
+# =====================================================
+# EKS ACCESS FOR GITHUB ACTIONS (FIXES YOUR ERROR)
+# =====================================================
+
+resource "aws_eks_access_entry" "github_actions" {
+  cluster_name  = aws_eks_cluster.eks.name
+  principal_arn = "arn:aws:iam::616033922030:role/github-actions-eks-deployer"
+  type          = "STANDARD"
+}
+
+resource "aws_eks_access_policy_association" "github_actions_admin" {
+  cluster_name  = aws_eks_cluster.eks.name
+  principal_arn = aws_eks_access_entry.github_actions.principal_arn
+  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+
+  access_scope {
+    type = "cluster"
+  }
+}
+
